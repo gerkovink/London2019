@@ -1,0 +1,71 @@
+---
+title: "Recent advancements"
+author: "Gerko Vink"
+date: "CMstatistics 2019 - London"
+output: 
+ ioslides_presentation:
+  toc: true
+  logo: gerko.png
+  smaller: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## This presentation | has a website: 
+
+<center>
+[www.gerkovink.com/London2019/](https://www.gerkovink.com/London2019/)
+</center>
+<br><br><br>
+You can find all related materials, links and references there. 
+
+# A short overview 
+
+## Imputation
+For those of you who are unfamiliar with imputation:
+
+$$\text{With imputation, some estimation procedure is used to impute (fill in)}\\
+\text{each missing datum, resulting in a completed dataset that can}\\
+\text{be analyzed as if the data were completely observed.}$$
+
+We can do this once (single imputation) or multiple times (multiple imputation). 
+
+- **With MI, each missing datum is imputed $m \geq 2$ times, resulting in $m$ completed datasets.**
+
+Multiple imputation has some benefits over single imputation:
+
+- it accounts for missing data uncertainty
+- it accounts for parameter uncertainty
+- additional adjustments to obtain valid inference are not necessary
+
+## Iterative imputation
+
+## Joint modeling
+
+## FCS
+
+# Multivariate imputation
+
+## Why is it useful
+
+## Example squares
+
+## Example compositional data
+
+## Example CRA
+
+# Hybrid imputation models
+
+## Define blocks
+
+## Joint model in FCS
+
+## FCS in joint model
+
+## Multilevel imputation
+
+# Overview
+
+## Conclusion
