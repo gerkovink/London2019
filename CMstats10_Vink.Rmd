@@ -221,7 +221,7 @@ Comparisons between JM and FCS have been made that indicate that FCS is a useful
 
 - Specify the imputation models $P(Y_j^\mathrm{mis} | Y_j^\mathrm{obs}, Y_{-j}, X)$
 
-  - where Y_{−j} is the set of incomplete variables except Y_j
+  - where $Y_{−j}$ is the set of incomplete variables except $Y_j$
   
 - Fill in starting values for the missing data
 - And iterate
