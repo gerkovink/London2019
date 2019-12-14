@@ -1,0 +1,598 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[ignorenonframetext,]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph:
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+\centering
+\begin{beamercolorbox}[sep=16pt,center]{part title}
+  \usebeamerfont{part title}\insertpart\par
+\end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+\centering
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+  \usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+\centering
+\begin{beamercolorbox}[sep=8pt,center]{part title}
+  \usebeamerfont{subsection title}\insertsubsection\par
+\end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={Hybrid imputation},
+            pdfauthor={Gerko Vink and Stef van Buuren},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\newif\ifbibliography
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+\usepackage{caption}
+% These lines are needed to make table captions work with longtable:
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{Hybrid imputation}
+\author{Gerko Vink and Stef van Buuren}
+\date{Recent advancements in iterative imputation}
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}
+
+\end{frame}
+
+\begin{frame}{This presentation \textbar{} has a website:}
+\protect\hypertarget{this-presentation-has-a-website}{}
+
+\href{https://www.gerkovink.com/London2019/}{www.gerkovink.com/London2019/}
+
+ You can find all related materials, links and references there.
+
+\end{frame}
+
+\hypertarget{a-short-overview}{%
+\section{A short overview}\label{a-short-overview}}
+
+\begin{frame}{Imputation}
+\protect\hypertarget{imputation}{}
+
+For those of you who are unfamiliar with imputation:
+
+ With imputation, some estimation procedure is used to impute (fill in)
+each missing datum, resulting in a completed dataset that can be
+analyzed as if the data were completely observed.
+
+We can do this once (single imputation) or multiple times (multiple
+imputation).
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{With MI, each missing datum is imputed \(m \geq 2\) times,
+  resulting in \(m\) completed datasets.}
+\end{itemize}
+
+Multiple imputation has some benefits over single imputation:
+
+\begin{itemize}
+\tightlist
+\item
+  it accounts for missing data uncertainty
+\item
+  it accounts for parameter uncertainty
+\item
+  additional adjustments to obtain valid inference are not necessary
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{How to go about this?}
+\protect\hypertarget{how-to-go-about-this}{}
+
+Once we start the process of multiple imputation, we need a scheme to
+solve for multivariate missingness
+
+Some notation:
+
+\begin{itemize}
+\item
+  Let \(Y\) be an incomplete column in the data
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(Y_\mathrm{mis}\) denoting the unobserved part
+  \item
+    \(Y_\mathrm{obs}\) denotes the observed part
+  \end{itemize}
+\item
+  Let \(X\) be a set of completely observed covariates
+\end{itemize}
+
+In general, there are two flavours of multiple imputation:
+
+\begin{enumerate}
+\tightlist
+\item
+  We can either model the joint distribution of the data by means of
+  \textbf{joint modeling}
+\item
+  Or, we can model each variable separately by means of \textbf{fully
+  conditional specification}
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Joint modeling}
+\protect\hypertarget{joint-modeling}{}
+
+With JM, imputations are drawn from an assumed joint multivariate
+distribution.
+
+\begin{itemize}
+\tightlist
+\item
+  Often a multivariate normal model is used for both continuous and
+  categorical data,
+\item
+  Other joint models have been proposed (see e.g.~Olkin and Tate, 1961;
+  Van Buuren and van Rijckevorsel, 1992; Schafer, 1997; Van Ginkel et
+  al., 2007; Goldstein et al., 2009; Chen et al., 2011).
+\end{itemize}
+
+Joint modeling imputations generated under the normal model are usually
+robust to misspecification of the imputation model (Schafer, 1997;
+Demirtas et al., 2008), \textbf{although transformation towards
+normality is generally beneficial.}
+
+\begin{block}{Procedure}
+
+\begin{enumerate}
+\tightlist
+\item
+  Specify the joint model \(P(Y,X)\)
+\item
+  Derive \(P(Y_\mathrm{mis}|Y_\mathrm{obs},X)\)
+\item
+  Draw imputations \(\dot Y^\mathrm{mis}\) with a Gibbs sampler
+\end{enumerate}
+
+\end{block}
+
+\end{frame}
+
+\begin{frame}{Joint modeling}
+\protect\hypertarget{joint-modeling-1}{}
+
+\textbf{PRO}
+
+\begin{itemize}
+\tightlist
+\item
+  The conditionals are compatible
+\item
+  The statistical inference is correct under the assumed joint model
+\item
+  Efficient parametrization is possible
+\item
+  The theoretical properties are known
+\end{itemize}
+
+\textbf{CON}
+
+\begin{itemize}
+\tightlist
+\item
+  Having to specify a joint model impacts flexibility
+\item
+  The JM can assume more than the complete data problem
+\item
+  It can lead to unrealistically large models
+\item
+  The assumed model may not be very close to the data
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{FCS}
+\protect\hypertarget{fcs}{}
+
+Multiple imputation by means of FCS does not start from an explicit
+multivariate model.
+
+ With FCS, multivariate missing data is imputed by univariately
+specifying an imputation model for each incomplete variable, conditional
+on a set of other (possibly incomplete) variables.
+
+\begin{itemize}
+\tightlist
+\item
+  the multivariate distribution for the data is thereby implicitly
+  specified through the univariate conditional densities
+\item
+  imputations are obtained by iterating over the conditionally specified
+  imputation models.
+\end{itemize}
+
+\begin{block}{Procedure}
+
+\begin{itemize}
+\tightlist
+\item
+  Specify \(P(Y^\mathrm{mis} | Y^\mathrm{obs}, X)\)
+\item
+  Draw imputations \(\dot Y^\mathrm{mis}\) with Gibbs sampler
+\end{itemize}
+
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]{FCS}
+\protect\hypertarget{fcs-1}{}
+
+The general idea of using conditionally specified models to deal with
+missing data has been discussed and applied by many authors
+
+\begin{itemize}
+\tightlist
+\item
+  see e.g.~Kennickell, 1991; Raghunathan and Siscovick, 1996; Oudshoorn
+  et al., 1999; Brand, 1999; Van Buuren et al., 1999; Van Buuren and
+  Oudshoorn, 2000; Raghunathan et al., 2001; Faris et al., 2002; Van
+  Buuren et al., 2006.
+\end{itemize}
+
+Comparisons between JM and FCS have been made that indicate that FCS is
+a useful and flexible alternative to JM when the joint distribution of
+the data is not easily specified (Van Buuren, 2007) and that similar
+results may be expected from both imputation approaches (Lee and Carlin,
+2010).
+
+\begin{block}{FCS in \texttt{mice}}
+
+\begin{itemize}
+\item
+  Specify the imputation models
+  \(P(Y_j^\mathrm{mis} | Y_j^\mathrm{obs}, Y_{-j}, X)\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    where Y\_\{−j\} is the set of incomplete variables except Y\_j
+  \end{itemize}
+\item
+  Fill in starting values for the missing data
+\item
+  And iterate
+\end{itemize}
+
+\end{block}
+
+\end{frame}
+
+\begin{frame}{Why I prefer FCS}
+\protect\hypertarget{why-i-prefer-fcs}{}
+
+\textbf{PRO}
+
+\begin{itemize}
+\tightlist
+\item
+  FCS is very flexible
+\item
+  modeling remains close to the data
+\item
+  one may use a subset of predictors for each column
+\item
+  work very well in practice
+\item
+  straightforward to explain to applied researchers
+\end{itemize}
+
+\textbf{CON}
+
+\begin{itemize}
+\tightlist
+\item
+  its theoretical properties are only known in special cases
+\item
+  potential incompatibility of the collection of conditionals with the
+  joint
+\item
+  no computational shortcuts
+\end{itemize}
+
+Bold statement:
+
+\[\text{Merging JM and FCS would be better}\]
+
+\end{frame}
+
+\hypertarget{merge-jm-and-fcs}{%
+\section{Merge JM and FCS}\label{merge-jm-and-fcs}}
+
+\begin{frame}[fragile]{Hybrids of JM and FCS}
+\protect\hypertarget{hybrids-of-jm-and-fcs}{}
+
+We can combine the flexibility of FCS with the appealing theoretical
+properties of JM
+
+In order to do so, we need to partition the variables into
+\textbf{blocks}
+
+\begin{itemize}
+\item
+  For example, we might partition \(b\) blocks \(h = 1,\dots,b\) as
+  follows
+
+  \begin{itemize}
+  \item
+    a single block with \(b=1\) would hold a \textbf{joint model}:
+    \[\{Y_1, Y_2, Y_3, Y_4\}, X\]
+  \item
+    a quadruppel block with \(b=4\) would be the \texttt{mice} algorithm
+    \[\{Y_1\},\{Y_2\},\{Y_3\},\{Y_4\}, X\]
+  \item
+    anything in between would be a hybrid between the joint model and
+    the \texttt{mice} model. For example,
+    \[\{Y_1, Y_2, Y_3\},\{Y_4\}, X\]
+  \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Why is this useful}
+\protect\hypertarget{why-is-this-useful}{}
+
+It is not rare that sets of variable follow a deterministic relation or
+system. Examples are
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Imputing squares/nonlinear effects}: In the model
+  \(y=\alpha + \beta_1X+\beta_2X^2 + \epsilon\), \(X\) and \(X^2\)
+  should be imputed jointly (Von Hippel, 2009, Seaman, Bartlett \&
+  White, 2012, Vink \& Van Buuren, 2013, Bartlett et al., 2015)
+\item
+  \textbf{Compositional data}: Predictive ratio matching (Vink, 2015,
+  Ch5)
+\end{itemize}
+
+\[
+\begin{array}{lllllllllllll}
+x_0 &=  &x_1        &+  &x_2        &+      &x_3        &+& x_4 &       &   &   &\\
+       &    &=      &       &           &       &       && =        &       &   &   &\\
+       &    &x_9        &       &           &       &       && x_5  &       &   &   &\\
+       &    &+      &       &           &       &       && +        &       &   &   &\\
+       &    &x_{10}     &       &           &       &       &&x_6       &=      &x_7    &+&x_8
+\end{array}
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Multivariate PMM}: Imputing a combination of outcomes
+  optimally based on a linear combination of covariates (Cai, Vink \&
+  Van Buuren - working paper).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{JM embedded within FCS}
+\protect\hypertarget{jm-embedded-within-fcs}{}
+
+\begin{longtable}[]{@{}lllll@{}}
+\toprule
+b & h & target & predictors & type\tabularnewline
+\midrule
+\endhead
+2 & 1 & \(\{Y_1, Y_2, Y_3\}\) & \(Y_4, X\) & mult\tabularnewline
+2 & 2 & \(Y_4\) & \(Y_1, Y_2, Y_3, X\) & univ\tabularnewline
+\bottomrule
+\end{longtable}
+
+\end{frame}
+
+\begin{frame}{FCS embedded within FCS}
+\protect\hypertarget{fcs-embedded-within-fcs}{}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+b & h & j & target & predictors & type\tabularnewline
+\midrule
+\endhead
+2 & 1 & 1 & \(Y_1\) & \(Y_2, Y_3, Y_4, X\) & univ\tabularnewline
+2 & 1 & 2 & \(Y_2\) & \(Y_1, Y_3, Y_4, X\) & univ\tabularnewline
+2 & 1 & 3 & \(Y_3\) & \(Y_1, Y_2, Y_4, X\) & univ\tabularnewline
+2 & 2 & 1 & \(Y_4\) & \(Y_1, Y_2, Y_3, X\) & univ\tabularnewline
+\bottomrule
+\end{longtable}
+
+\end{frame}
+
+\begin{frame}{Benefits of blocks in \texttt{mice()}}
+\protect\hypertarget{benefits-of-blocks-in-mice}{}
+
+\begin{enumerate}
+\tightlist
+\item
+  Looping over \(b\) blocks instead of looping over \(p\) columns.
+\item
+  Only specify \(b \times p\) predictor relations and not \(p^2\).
+\item
+  Only specify \(b\) univariate imputation methods instead of \(p\)
+  methods.
+\item
+  Ability for imputing more than one column at once
+\item
+  Simplified overall model specification
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  e.g.~sets of items in scales, matching items in longitudinal data,
+  joining data sets, etc.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{predictorMatrix} simplification:}
+\protect\hypertarget{predictormatrix-simplification}{}
+
+Under the conventional FCS predictor specification, we could hypothesize
+the following \texttt{predictorMatrix}.
+
+\begin{verbatim}
+##           age item1 item2 sum_items time1 time2 time3 mean_time
+## age         0     0     0         1     0     0     0         1
+## item1       1     0     1         0     0     0     0         1
+## item2       1     1     0         0     0     0     0         1
+## sum_items   0     1     1         0     0     0     0         0
+## time1       1     0     0         1     0     1     1         0
+## time2       1     0     0         1     1     0     1         0
+## time3       1     0     0         1     1     1     0         0
+## mean_time   0     0     0         0     1     1     1         0
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{predictorMatrix} simplification:}
+\protect\hypertarget{predictormatrix-simplification-1}{}
+
+Under the new \texttt{blocked} approach, however, we could simplify
+these specifications into the following blocks and predictor relations.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{blocks <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{age =} \StringTok{"age"}\NormalTok{, }
+               \DataTypeTok{A =} \KeywordTok{c}\NormalTok{(}\StringTok{"item1"}\NormalTok{, }\StringTok{"item2"}\NormalTok{, }\StringTok{"sum_items"}\NormalTok{), }
+               \DataTypeTok{B =} \KeywordTok{c}\NormalTok{(}\StringTok{"time1"}\NormalTok{, }\StringTok{"time2"}\NormalTok{, }\StringTok{"time3"}\NormalTok{, }\StringTok{"mean_time"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       age item1 item2 sum_items time1 time2 time3 mean_time
+## age     0     0     0         1     0     0     0         1
+## Items   1     0     0         0     0     0     0         1
+## Time    1     0     0         1     0     0     0         0
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}{Multilevel imputation}
+\protect\hypertarget{multilevel-imputation}{}
+
+\end{frame}
+
+\hypertarget{overview}{%
+\section{Overview}\label{overview}}
+
+\begin{frame}{Conclusion}
+\protect\hypertarget{conclusion}{}
+
+\end{frame}
+
+\end{document}

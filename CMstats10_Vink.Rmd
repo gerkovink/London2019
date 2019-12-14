@@ -1,16 +1,21 @@
 ---
-title: "Recent advancements"
-author: "Gerko Vink"
-date: "CMstatistics 2019 - London"
-output: 
- ioslides_presentation:
-  toc: true
-  logo: gerko.png
-  smaller: TRUE
+title: "Hybrid imputation"
+author: "Gerko Vink and Stef van Buuren"
+date: "Recent advancements in iterative imputation"
+output:
+  ioslides_presentation:
+    logo: mice.png
+    smaller: yes
+    toc: yes
+  beamer_presentation: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+library(mice)
+library(dplyr)
+library(miceadds)
 ```
 
 <style>
@@ -132,7 +137,7 @@ We can do this once (single imputation) or multiple times (multiple imputation).
 
 - **With MI, each missing datum is imputed $m \geq 2$ times, resulting in $m$ completed datasets.**
 
-Multiple imputation has some benefits over single imputation:
+Multiple imputation (Rubin, 1987) has some benefits over single imputation:
 
 - it accounts for missing data uncertainty
 - it accounts for parameter uncertainty
@@ -145,40 +150,263 @@ Some notation:
 
 - Let $Y$ be an incomplete column in the data
 
-  - $Y_{mis}$ denoting the unobserved part
-  - $Y_{obs}$ denotes the observed part
+  - $Y_\mathrm{mis}$ denoting the unobserved part
+  - $Y_\mathrm{obs}$ denotes the observed part
 
-- Let $X$ be a set of covariates (complete or incomplete)
+- Let $X$ be a set of completely observed covariates
 
-In general, there are two flavours of multiple imputation: **joint modeling** and **Fully Conditional Specification**
+In general, there are two flavours of multiple imputation: 
 
-
-
+1. We can either model the joint distribution of the data by means of **joint modeling** 
+2. Or, we can model each variable separately by means of **fully conditional specification**
 
 ## Joint modeling
+With JM, imputations are drawn from an assumed joint multivariate distribution. 
+
+- Often a multivariate normal model is used for both continuous and categorical data, 
+- Other joint models have been proposed (see e.g. Olkin and Tate, 1961; Van Buuren and van Rijckevorsel, 1992; Schafer, 1997; Van Ginkel et al., 2007; Goldstein et al., 2009; Chen et al., 2011). 
+
+Joint modeling imputations generated under the normal model are usually robust to misspecification of the imputation model (Schafer, 1997; Demirtas et al., 2008), **although transformation towards normality is generally beneficial.**
+
+### Procedure
+1. Specify the joint model $P(Y,X)$
+2. Derive $P(Y_\mathrm{mis}|Y_\mathrm{obs},X)$
+3. Draw imputations $\dot Y^\mathrm{mis}$ with a Gibbs sampler
+
+## Joint modeling
+**PRO**
+
+- The conditionals are compatible
+- The statistical inference is correct under the assumed joint model
+- Efficient parametrization is possible
+- The theoretical properties are known
+
+**CON**
+
+- Having to specify a joint model impacts flexibility
+- The JM can assume more than the complete data problem
+- It can lead to unrealistically large models
+- The assumed model may not be very close to the data
+
 
 ## FCS
+Multiple imputation by means of FCS does not start from an explicit multivariate model. 
 
-# Multivariate imputation
+<div class="notepaper">
+  <figure class="quote">
+    <blockquote class="curly-quotes" cite="https://www.youtube.com/watch?v=qYLrc9hy0t0">
+    <font color="black">
+   With FCS, multivariate missing data is imputed by univariately specifying an imputation model for each incomplete variable, conditional on a set of other (possibly incomplete) variables. 
+    </font>
+    </blockquote>
+  </figure>
+</div>
 
-## Why is it useful
+- the multivariate distribution for the data is thereby implicitly specified through the univariate conditional densities 
+- imputations are obtained by iterating over the conditionally specified imputation models.
 
-## Example squares
+### Procedure
 
-## Example compositional data
+- Specify $P(Y^\mathrm{mis} | Y^\mathrm{obs}, X)$
+- Draw imputations $\dot Y^\mathrm{mis}$ with Gibbs sampler
 
-## Example CRA
+## FCS
+The general idea of using conditionally specified models to deal with missing data has been discussed and applied by many authors 
 
-# Hybrid imputation models
+  - see e.g. Kennickell, 1991; Raghunathan and Siscovick, 1996; Oudshoorn et al., 1999; Brand, 1999; Van Buuren et al., 1999; Van Buuren and Oudshoorn, 2000; Raghunathan et al., 2001; Faris et al., 2002; Van Buuren et al., 2006. 
 
-## Define blocks
+Comparisons between JM and FCS have been made that indicate that FCS is a useful and flexible alternative to JM when the joint distribution of the data is not easily specified (Van Buuren, 2007) and that similar results may be expected from both imputation approaches (Lee and Carlin, 2010).
 
-## Joint model in FCS
+### FCS in `mice`
 
-## FCS in joint model
+- Specify the imputation models $P(Y_j^\mathrm{mis} | Y_j^\mathrm{obs}, Y_{-j}, X)$
 
-## Multilevel imputation
+  - where Y_{−j} is the set of incomplete variables except Y_j
+  
+- Fill in starting values for the missing data
+- And iterate
 
-# Overview
+## Why I prefer FCS
+
+**PRO**
+
+- FCS is very flexible 
+- modeling remains close to the data
+- one may use a subset of predictors for each column
+- work very well in practice
+- straightforward to explain to applied researchers
+
+**CON**
+
+- its theoretical properties are only known in special cases
+- potential incompatibility of the collection of conditionals with the joint
+- no computational shortcuts
+
+Bold statement:
+
+$$\text{Merging JM and FCS would be better}$$
+
+# Merge JM and FCS
+
+## Hybrids of JM and FCS
+We can combine the flexibility of FCS with the appealing theoretical properties of JM
+
+In order to do so, we need to partition the variables into **blocks**
+
+- For example, we might partition $b$ blocks $h = 1,\dots,b$ as follows
+
+  - a single block with $b=1$ would hold a **joint model**:
+$$\{Y_1, Y_2, Y_3, Y_4\}, X$$
+  - a quadruppel block with $b=4$ would be the `mice` algorithm
+  $$\{Y_1\},\{Y_2\},\{Y_3\},\{Y_4\}, X$$
+
+  - anything in between would be a hybrid between the joint model and the `mice` model. For example,
+  $$\{Y_1, Y_2, Y_3\},\{Y_4\}, X$$  
+
+## Why is this useful
+It is not rare that sets of variable follow a deterministic relation or system. Examples are
+
+- **Imputing squares/nonlinear effects**: In the model $y=\alpha + \beta_1X+\beta_2X^2 + \epsilon$, $X$ and $X^2$ should be imputed jointly (Von Hippel, 2009, Seaman, Bartlett & White, 2012, Vink & Van Buuren, 2013, Bartlett et al., 2015)
+- **Compositional data**: Predictive ratio matching (Vink, 2015, Ch5)
+
+$$
+\begin{array}{lllllllllllll}
+x_0 &=	&x_1		&+	&x_2		&+		&x_3		&+& x_4	& 		& 	& 	&\\
+       &  	&= 		&   	&      		& 		&  		&& =		& 		& 	&	&\\
+       &  	&x_9    	&   	&      		&		& 		&& x_5	& 		& 	&	&\\
+       &  	&+		&   	&      		&		& 		&& +		& 		& 	&	&\\
+       &  	&x_{10} 	&   	&      		&		& 	 	&&x_6		&= 		&x_7 	&+&x_8
+\end{array}
+$$
+
+- **Multivariate PMM**: Imputing a combination of outcomes optimally based on a linear combination of covariates (Cai, Vink & Van Buuren - working paper). 
+
+## JM embedded within FCS
+
+b  | h | target            | predictors| type
+---|---|-------------------|-----------|------
+2  | 1 | $\{Y_1, Y_2, Y_3\}$ | $Y_4, X$ | mult
+2  | 2 | $Y_4$ | $Y_1, Y_2, Y_3, X$     | univ
+
+## FCS embedded within FCS 
+
+b  | h | j | target| predictors      | type
+---|---|---|-------|------------------|--------
+2  | 1 | 1 | $Y_1$ | $Y_2, Y_3, Y_4, X$ | univ
+2  | 1 | 2 | $Y_2$ | $Y_1, Y_3, Y_4, X$ | univ
+2  | 1 | 3 | $Y_3$ | $Y_1, Y_2, Y_4, X$ | univ
+2  | 2 | 1 | $Y_4$ | $Y_1, Y_2, Y_3, X$ | univ
+
+## Benefits of blocks in `mice()`
+
+1. Looping over $b$ blocks instead of looping over $p$ columns. 
+2. Only specify $b \times p$ predictor relations and not $p^2$. 
+3. Only specify $b$ univariate imputation methods instead  of $p$ methods. 
+4. Ability for imputing more than one column at once
+5. Simplified overall model specification
+  - e.g. sets of items in scales, matching items in longitudinal data, joining data sets, etc.
+
+## `predictorMatrix` simplification: 
+
+Under the conventional FCS predictor specification, we could hypothesize the following `predictorMatrix`. 
+
+```{r echo=FALSE}
+nam <- c("age", "item1", "item2", "sum_items", "time1", "time2", "time3", "mean_time")
+a <- matrix(c(0, 0, 0, 1, 0, 0, 0, 1,
+              1, 0, 1, 0, 0, 0, 0, 1,
+              1, 1, 0, 0, 0, 0, 0, 1,
+              0, 1, 1, 0, 0, 0, 0, 0,
+              1, 0, 0, 1, 0, 1, 1, 0,
+              1, 0, 0, 1, 1, 0, 1, 0,
+              1, 0, 0, 1, 1, 1, 0, 0,
+              0, 0, 0, 0, 1, 1, 1, 0),
+              byrow = TRUE, nrow = 8, 
+            dimnames = list(nam, nam))
+print(a)
+```
+
+## `predictorMatrix` simplification: 
+Under the new `blocked` approach, however, we could simplify these specifications into the following blocks and predictor relations. 
+
+```{r}
+blocks <- list(age = "age", 
+               A = c("item1", "item2", "sum_items"), 
+               B = c("time1", "time2", "time3", "mean_time"))
+```
+```{r echo = FALSE}
+namr <- c("age", "Items", "Time")
+b <- matrix(c(0, 0, 0, 1, 0, 0, 0, 1,
+              1, 0, 0, 0, 0, 0, 0, 1,
+              1, 0, 0, 1, 0, 0, 0, 0),
+              byrow = TRUE, nrow = 3, 
+            dimnames = list(namr, nam))
+print(b)
+```
+
+## An example: `brandsma`
+The `brandsma` dataset (Snijders and Bosker, 2012) contains data from 4106 pupils in 216 schools. 
+```{r}
+d <- brandsma %>% select(sch, lpo, iqv, den)
+head(d)
+```
+
+The scientific interest is to create a model for predicting the outcome `lpo` from the level-1 predictor `iqv` and the measured level-2 predictor `den` (which takes values 1-4). For pupil $i$ in school $c$ in composition notation:
+
+$$lpo_{ic} = \beta_0 + \beta_1\mathrm{iqv}_{ic} + \beta_2\mathrm{den}_c + \upsilon_{0c}+ \epsilon_{ic}$$
+where $\epsilon_{ic} \sim \mathcal{N}(0, \sigma_\epsilon^2)$ and $\upsilon_{0c} = \mathcal{N}(0, \sigma_\upsilon^2)$
+
+## Normally in `mice`
+```{r}
+meth <- make.method(d)
+meth[c("lpo", "iqv", "den")] <- c("2l.pmm", "2l.pmm", "2lonly.pmm")
+meth
+pred <- make.predictorMatrix(d)
+pred["lpo", ] <- c(-2, 0, 3, 1) # -2 denotes cluster identifier
+pred["iqv", ] <- c(-2, 3, 0, 1) # 3 denotes including the cluster mean for a covariate
+pred["den", ] <- c(-2, 1, 1, 0) # 1 denotes fixed effects predictor
+pred
+```
+```{r eval = FALSE}
+imp <- mice(d, pred = pred, meth = meth, seed = 123, m = 10, print = FALSE)
+```
+
+## With `blocks`
+We use the function `mitml::jomoImpute` and call it from within `mice`
+```{r cache = TRUE}
+d$den <- as.factor(d$den)
+block <- make.blocks(d, "collect") # assign all vars to a single block
+formula <- list(collect = list(lpo + iqv ~ 1 + (1 | sch),
+                               den ~ 1))
+
+```
+We parse the `block` and `formula` objects to their respective arguments in the `mice` function
+```{r eval = FALSE}
+imp <- mice(d, meth = "jomoImpute", blocks = block,
+            form = formula, print = FALSE, seed = 1,
+            maxit = 2, m = 10, n.burn = 100)
+```
+
 
 ## Conclusion
+
+Imputing column in blocks is a straigtforward extension to the FCS algorithm
+
+- Fully implemented in `mice` in `R`
+- Adding blocks allows for more flexibility in cases where multivariate imputation would lead to to better inference
+- Using blocks allows the modeler to remain closer to the observed data
+- It is simple to specify hybrid models
+
+**To do**
+
+- We're still working on the documentation that details a variety of use cases
+
+**Potentially interesting**
+
+Integrate the hybrid (JM/FCS) approach with the blocked sequential regression multivariate imputation approach by Zhu (2016), which in turn generalizes the monotone block approach of Li et al. (2014). 
+
+
+## References
+
+The multilevel example is detailed in [Van Buuren (2018), Chapter 7.10.4](https://stefvanbuuren.name/fimd/sec-mlguidelines.html)
+
+See [www.gerkovink.com/London2019/](https://www.gerkovink.com/London2019) for an detailed overview of all references. 

@@ -1,0 +1,77 @@
+---
+title: "London 2019"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: scroll
+---
+
+# Intro {.sidebar}
+
+This dashboard covers the presentation files, references and relevant links for the talk I gave about blocked impuation and hybrid imputation models at the *12th International Conference of the ERCIM WG on Computational and Methodological Statistics* in London. 
+
+If you have questions, or if I can be of any help, feel free to [contact me](mailto:G.Vink@uu.nl).
+
+All the best, 
+
+[Gerko Vink](https://www.gerkovink.com)
+
+---
+
+# London, December 14, 2019
+
+## Column 1
+
+### The presentation
+
+Please find herethe presentation and the archive with the files that generated the presentation. 
+
+- [The presentation](CMstats10_Vink.html)
+- [The corresponding GitHub Archive](https://github.com/gerkovink/London2019)
+
+### Supplementary materials and links
+More about `mice`, `blocks` and hybrid imputation can be found in 
+
+- [Flexible Imputation of Missing Data](https://stefvanbuuren.name/fimd/) by [Stef van Buuren](https://stefvanbuuren.name)
+
+Main software used
+
+- [mice](https://github.com/stefvanbuuren/mice) in [R](https://www.r-project.org) - [getting started with `mice`](https://www.gerkovink.com/miceVignettes/)
+- [mitml](https://github.com/simongrund1/mitml) in [R](https://www.r-project.org) 
+- [miceadds](https://github.com/alexanderrobitzsch/miceadds) in [R](https://www.r-project.org)
+
+### For fun
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">My wife asked me what machine learning is and I said: remember when we ordered the hot plate for the boat and amazon suggested buying all the equipment needed to make a full meth lab?</p>&mdash; (((Kane Baccigalupi))) (@rubyghetto) <a href="https://twitter.com/rubyghetto/status/1058220004301127680?ref_src=twsrc%5Etfw">November 2, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+##
+
+### References
+I refer to the following sources [in order of appearance]
+
+- Rubin, D. (1987). Multiple Imputation for Nonresponse in Surveys. John Wiley and
+Sons, New York.
+- Olkin, I. and Tate, R. (1961). Multivariate correlation models with mixed discrete and continuous variables. The Annals of Mathematical Statistics, 32(2):448–465.
+- Van Buuren, S. and van Rijckevorsel, J. L. (1992). Imputation of missing categorical
+data by maximizing internal consistency. Psychometrika, 57(4):567–580.
+- Schafer, J. (1997). Analysis of incomplete multivariate data. Chapman & Hall/CRC.
+- Van Ginkel, J. R., Van der Ark, L. A., and Sijtsma, K. (2007). Multiple imputation for item scores when test data are factorially complex. British Journal of Mathematical
+and Statistical Psychology, 60(2):315–338.
+- Goldstein, H., Carpenter, J., Kenward, M. G., and Levin, K. A. (2009). Multilevel models with multivariate mixed response types. Statistical Modelling, 9(3):173–197.
+- Chen, H. Y., Xie, H., and Qian, Y. (2011). Multiple imputation for missing values through conditional semiparametric odds ratio models. Biometrics, 67(3):799–809.
+- Demirtas, H., Freels, S. A., and Yucel, R. M. (2008). Plausibility of multivariate normality assumption when multiply imputing non-gaussian continuous outcomes: a simulation assessment. Journal of Statistical Computation and Simulation, 78(1):69–84.
+- Kennickell, A. B. (1991). Imputation of the 1989 survey of consumer finances: Stochastic relaxation and multiple imputation. Technical report, mimeo, Board of Governors of the Federal Reserve System.
+- Oudshoorn, C. G. M., Buuren, S., and Rijckevorsel, J. L. A. (1999). Flexible multiple imputation by chained equations of the AVO-95 survey. TNO Prevention and Health
+Leiden.
+- Brand, J. P. (1999). Development, implementation and evaluation of multiple impu- tation strategies for the statistical analysis of incomplete data sets. Erasmus MC: University Medical Center Rotterdam.
+- Van Buuren, S., Boshuizen, H., and Knook, D. (1999). Multiple imputation of missing blood pressure covariates in survival analysis. Statistics in Medicine, 18(6):681–694. 
+- Van Buuren, S. and Oudshoorn, C. (2000). Multivariate imputation by chained equations: Mice v1. 0 user’s manual. The Netherlands: TNO Report PG/VGZ/00.038. Netherlands Organization for applied scientific research.
+- Raghunathan, T. E., Lepkowski, J. M., Van Hoewyk, J., and Solenberger, P. (2001). A multivariate technique for multiply imputing missing values using a sequence of regression models. Survey methodology, 27(1):85–96.
+- Faris, P. D., Ghali, W. A., Brant, R., Norris, C. M., Galbraith, P. D., and Knudtson, M. L. (2002). Multiple imputation versus data enhancement for dealing with missing data in observational health care outcome analyses. Journal of Clinical Epidemiology, 55(2):184–191.
+- Van Buuren, S., Brand, J. P., Groothuis-Oudshoorn, C., and Rubin, D. B. (2006). Fully conditional specification in multivariate imputation. Journal of statistical computation and simulation, 76(12):1049–1064.
+- Van Buuren, S. (2007). Multiple imputation of discrete and continuous data by fully
+conditional specification. Statistical methods in medical research, 16(3):219–242.
+- Lee, K. J. and Carlin, J. B. (2010). Multiple imputation for missing data: fully conditional specification versus multivariate normal imputation. American Journal of Epidemiology, 171(5):624–632.
+- Snijders, T. A. B., and R. J. Bosker. 2012. Multilevel Analysis. an Introduction to Basic and Advanced Multilevel Modeling. Second Edition. London: Sage Publications Ltd.
+- Zhu, J. 2016. “Assessment and Improvement of a Sequential Regression Multivariate Imputation Algorithm.” PhD thesis, University of Michigan.
