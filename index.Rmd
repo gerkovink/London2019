@@ -8,7 +8,7 @@ output:
 
 # Intro {.sidebar}
 
-This dashboard covers the presentation files, references and relevant links for our talk about blocked impuation and hybrid imputation models with `mice` at the *12th International Conference of the ERCIM WG on Computational and Methodological Statistics* in London. 
+This dashboard covers the presentation files, references and relevant links for our talk about blocked imputation and hybrid imputation models with `mice` at the *12th International Conference of the ERCIM WG on Computational and Methodological Statistics* in London. 
 
 If you have questions, or if I can be of any help, feel free to [contact me](mailto:G.Vink@uu.nl).
 
