@@ -8,13 +8,13 @@ output:
 
 # Intro {.sidebar}
 
-This dashboard covers the presentation files, references and relevant links for the talk I gave about blocked impuation and hybrid imputation models at the *12th International Conference of the ERCIM WG on Computational and Methodological Statistics* in London. 
+This dashboard covers the presentation files, references and relevant links for our talk about blocked impuation and hybrid imputation models with `mice` at the *12th International Conference of the ERCIM WG on Computational and Methodological Statistics* in London. 
 
 If you have questions, or if I can be of any help, feel free to [contact me](mailto:G.Vink@uu.nl).
 
 All the best, 
 
-[Gerko Vink](https://www.gerkovink.com)
+[Gerko Vink](https://www.gerkovink.com) and Stef van Buuren (https://stefvanbuuren.name)
 
 ---
 
@@ -24,7 +24,7 @@ All the best,
 
 ### The presentation
 
-Please find herethe presentation and the archive with the files that generated the presentation. 
+Please find here the presentation and the archive with the files that generated the presentation. 
 
 - [The presentation](CMstats10_Vink.html)
 - [The corresponding GitHub Archive](https://github.com/gerkovink/London2019)
@@ -41,9 +41,13 @@ Main software used
 - [miceadds](https://github.com/alexanderrobitzsch/miceadds) in [R](https://www.r-project.org)
 
 ### For fun
+<div> 
+<center>
+<img src="forfun.jpg" width="60%">
+</center>
+</div>
 
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">My wife asked me what machine learning is and I said: remember when we ordered the hot plate for the boat and amazon suggested buying all the equipment needed to make a full meth lab?</p>&mdash; (((Kane Baccigalupi))) (@rubyghetto) <a href="https://twitter.com/rubyghetto/status/1058220004301127680?ref_src=twsrc%5Etfw">November 2, 2018</a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+[source](https://geekandpoke.typepad.com/geekandpoke/2009/07/the-art-of-programming-part-2.html)
 
 ##
 
