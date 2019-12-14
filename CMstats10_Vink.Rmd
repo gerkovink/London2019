@@ -141,7 +141,7 @@ Multiple imputation (Rubin, 1987) has some benefits over single imputation:
 
 - it accounts for missing data uncertainty
 - it accounts for parameter uncertainty
-- additional adjustments to obtain valid inference are not necessary
+- can yield valid inference without additional adjustments 
 
 ## How to go about this?
 Once we start the process of multiple imputation, we need a scheme to solve for multivariate missingness
@@ -242,7 +242,7 @@ Comparisons between JM and FCS have been made that indicate that FCS is a useful
 - potential incompatibility of the collection of conditionals with the joint
 - no computational shortcuts
 
-Bold statement:
+Conclusion:
 
 $$\text{Merging JM and FCS would be better}$$
 
@@ -264,7 +264,7 @@ $$\{Y_1, Y_2, Y_3, Y_4\}, X$$
   $$\{Y_1, Y_2, Y_3\},\{Y_4\}, X$$  
 
 ## Why is this useful
-It is not rare that sets of variable follow a deterministic relation or system. Examples are
+Just some examples where a hybrid imputation procedure would be useful:
 
 - **Imputing squares/nonlinear effects**: In the model $y=\alpha + \beta_1X+\beta_2X^2 + \epsilon$, $X$ and $X^2$ should be imputed jointly (Von Hippel, 2009, Seaman, Bartlett & White, 2012, Vink & Van Buuren, 2013, Bartlett et al., 2015)
 - **Compositional data**: Predictive ratio matching (Vink, 2015, Ch5)
@@ -288,7 +288,13 @@ b  | h | target            | predictors| type
 2  | 1 | $\{Y_1, Y_2, Y_3\}$ | $Y_4, X$ | mult
 2  | 2 | $Y_4$ | $Y_1, Y_2, Y_3, X$     | univ
 
+$$\quad$$
+The above table details $b=2$ blocks. 
+
+The first block considers the multivariate imputation of the set $(Y_1, Y_2, Y_3)$. The second block considers the univariate imputation of the remaining column $Y_4$. 
+
 ## FCS embedded within FCS 
+With FCS, the scheme on the previous slide would take the following embedded structure:
 
 b  | h | j | target| predictors      | type
 ---|---|---|-------|------------------|--------
@@ -296,6 +302,10 @@ b  | h | j | target| predictors      | type
 2  | 1 | 2 | $Y_2$ | $Y_1, Y_3, Y_4, X$ | univ
 2  | 1 | 3 | $Y_3$ | $Y_1, Y_2, Y_4, X$ | univ
 2  | 2 | 1 | $Y_4$ | $Y_1, Y_2, Y_3, X$ | univ
+
+$$\quad$$
+
+The first block is a FCS loop within an FCS imputation procedure.
 
 ## Benefits of blocks in `mice()`
 
@@ -362,7 +372,7 @@ meth[c("lpo", "iqv", "den")] <- c("2l.pmm", "2l.pmm", "2lonly.pmm")
 meth
 pred <- make.predictorMatrix(d)
 pred["lpo", ] <- c(-2, 0, 3, 1) # -2 denotes cluster identifier
-pred["iqv", ] <- c(-2, 3, 0, 1) # 3 denotes including the cluster mean for a covariate
+pred["iqv", ] <- c(-2, 3, 0, 1) # 3 denotes including the covariate's cluster mean
 pred["den", ] <- c(-2, 1, 1, 0) # 1 denotes fixed effects predictor
 pred
 ```
